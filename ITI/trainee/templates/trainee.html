@@ -1,0 +1,85 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Trainees | ITI Egypt{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/trainees.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow">
+        <!-- Header with fixed background -->
+        <div class="header-container p-4 d-flex justify-content-between align-items-center flex-wrap">
+            <h1 class="h3 m-0">Trainee Management</h1>
+            <div>
+                <a href="{% url 'add_trainee' %}" class="btn add-btn text-white">Add New Trainee</a>
+                <a href="{% url 'createTrainee' %}" class="btn add-btn bg-primary text-white">Add New Trainee By Form</a>
+            </div>
+        </div>
+        <!-- Table Container -->
+        <div class="card-body">
+            {% if trainees %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Age</th>
+                            <th>Image</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trainee in trainees %}
+                        <tr>
+                            <td>{{ trainee.id }}</td>
+                            <td>{{ trainee.first_name }}</td>
+                            <td>{{ trainee.last_name }}</td>
+                            <td>{{ trainee.email }}</td>
+                            <td>{{ trainee.phone }}</td>
+                            <td>{{ trainee.age }}</td>
+                            <td>
+                                {% if trainee.image %}
+                                <img src="{{ trainee.image.url }}" alt="{{ trainee.first_name }}" class="trainee-image" width="50">
+                                {% else %}
+                                <span class="text-muted">No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ trainee.assigned_course.name }}</td>
+                            <td>
+                                <div class="d-flex flex-column flex-md-row gap-2">
+                                    <a href="{% url 'update' trainee.id %}" class="btn btn-sm edit-btn text-white">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'delete' trainee.id %}" class="btn btn-sm delete-btn text-white"
+                                        onclick="return confirm('Are you sure you want to delete this trainee?')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5 text-muted">
+                <p>No trainees available. <a href="{% url 'add_trainee' %}" class="text-decoration-none">Add a trainee</a>.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Any additional JavaScript for this page -->
+{% endblock %}

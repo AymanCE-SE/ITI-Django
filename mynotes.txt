@@ -1,0 +1,65 @@
+#postgres connecting
+-sudo apt update
+#install the postgres package:
+sudo apt install postgresql postgresql-contrib
+#created a user account called postgres that is associated with the default Postgres role. To connectc to the Postgres prompt
+sudo -u postgres psql
+#To exit:
+\q
+
+-->Start From Here<--
+#After activating the venv
+#Psycopg2 is a PostgreSQL adapter for Python. Install it using pip:
+- pip install psycopg2
+- pip install psycopg2-binary
+
+#Open your Django project's settings file (settings.py) and modify the DATABASES setting to use PostgreSQL:
+
+####### setting.py #######
+from decouple import Config, RepositoryEnv
+# Load configuration from .env file
+config = Config(RepositoryEnv('.env'))
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', cast=bool)
+
+DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql_psycopg2',
+           'NAME': config('DB_NAME'),
+           'USER': config('DB_USER'),
+           'PASSWORD': config('DB_PASSWORD'),
+           'HOST': config('DB_HOST'),
+           'PORT': config('DB_PORT'),
+    }
+  }
+
+##########################
+
+to connect django with database we have two ways:
+code first && db first
+code first >> we write the model and django creates the table 
+- python manage.py makemigration
+- python manage.py migrate
+
+(makemigration) process ==>it checks setting.py -> installed app and checks each application if it has changed models or created
+
+
+-->ORM<--
+- python manage.py shell
+-from course.models import Course
+#to make object of the class and add data or rows 
+- obj = Course()
+- obj.name = 'python' 
+- obj.save()
+or
+- Course.objects.create(name='java',description= 'java course',active= False)
+#select objects
+- Course.objects.all()
+- Course.objects.get(id=1).name 
+- Course.objects.filter()
+- Course.objects.filter(id=2).update(name='javasctipt')
+- Course.objects.filter(id=2).delete()

@@ -1,0 +1,109 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}ITI Egypt - Register{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 left-panel">
+            <img src="{% static 'images/iti-logo.png' %}" alt="ITI Logo">
+            <p>Join Egypt's premier IT training institute. Get access to specialized tracks, industry-relevant skills, and career opportunities with leading tech companies.</p>
+        </div>
+        <div class="col-md-7 form-container">
+            <h1>Create Your Account</h1>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="row input-row">
+                    <div class="col-md-6 input-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" value="{{ form.first_name.value|default:'' }}" required>
+                        {% if form.first_name.errors %}
+                            <div class="error-text">{{ form.first_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 input-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" value="{{ form.last_name.value|default:'' }}" required>
+                        {% if form.last_name.errors %}
+                            <div class="error-text">{{ form.last_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" value="{{ form.username.value|default:'' }}" required>
+                    {% if form.username.errors %}
+                        <div class="error-text">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" value="{{ form.email.value|default:'' }}" required>
+                    {% if form.email.errors %}
+                        <div class="error-text">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" value="{{ form.phone.value|default:'' }}" required>
+                    {% if form.phone.errors %}
+                        <div class="error-text">{{ form.phone.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="track">Preferred Track</label>
+                    <select id="track" name="track" required>
+                        <option value="" disabled {% if not form.track.value %}selected{% endif %}>Select your preferred track</option>
+                        <option value="web" {% if form.track.value == 'web' %}selected{% endif %}>Full Stack Web Development</option>
+                        <option value="mobile" {% if form.track.value == 'mobile' %}selected{% endif %}>Mobile Application Development</option>
+                        <option value="ai" {% if form.track.value == 'ai' %}selected{% endif %}>Artificial Intelligence</option>
+                        <option value="data" {% if form.track.value == 'data' %}selected{% endif %}>Data Science</option>
+                        <option value="embedded" {% if form.track.value == 'embedded' %}selected{% endif %}>Embedded Systems</option>
+                        <option value="cyber" {% if form.track.value == 'cyber' %}selected{% endif %}>Cyber Security</option>
+                    </select>
+                    {% if form.track.errors %}
+                        <div class="error-text">{{ form.track.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="password1">Password</label>
+                    <input type="password" id="password1" name="password1" placeholder="Create a password" required>
+                    {% if form.password1.errors %}
+                        <div class="error-text">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
+                    {% if form.password2.errors %}
+                        <div class="error-text">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="terms">
+                    <label>
+                        <input type="checkbox" name="terms" required> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn">Create Account</button>
+                <div class="login-link">
+                    Already have an account? <a href="{% url 'login' %}">Log in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

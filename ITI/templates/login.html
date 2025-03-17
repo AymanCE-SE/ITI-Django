@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block title %}ITI Egypt - Login{% endblock %}
+{% block content %}
+<div class="login-container">
+    <div class="left-panel" id="left-panel">
+        <img src="{% static 'images/iti-logo.png' %}" alt="ITI Logo">
+        <p>Empowering Egypt's youth with cutting-edge IT skills since 1993. Join our community of tech innovators and shape the digital future.</p>
+    </div>
+    <div class="form-container">
+        <h1>Welcome Back</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" name="remember_me"> Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn">Log In</button>
+            <div class="register-link">
+                Don't have an account? <a href="{% url 'register' %}">Register here</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

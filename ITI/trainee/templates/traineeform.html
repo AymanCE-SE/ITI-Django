@@ -1,0 +1,88 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}{% if trainee.id %}Edit{% else %}Add New{% endif %} Trainee | ITI Egypt{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/traineeform.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Trainee Management</h1>
+        <a href="{% url 'trainees' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Trainees
+        </a>
+    </header>
+    
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h2 class="card-title mb-4">{% if trainee.id %}Edit{% else %}Add New{% endif %} Trainee</h2>
+            <form method="post" 
+            action="{% if trainee.id %}{% url 'update' trainee.id %}{% else %}{% url 'add_trainee' %}{% endif %}" 
+            enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ trainee.first_name|default_if_none:'' }}" required>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ trainee.last_name|default_if_none:'' }}" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ trainee.email|default_if_none:'' }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ trainee.phone|default_if_none:'' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" value="{{ trainee.age|default_if_none:'' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                    {% if trainee.image %}
+                        <p>Current Image: <img src="{{ trainee.image.url }}" alt="Trainee Image" width="50"></p>
+                        <input type="hidden" name="existing_image" value="{{ trainee.image.url }}">
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="course" class="form-label">Assigned Course</label>
+                    <select class="form-select" id="course" name="course_id" required>
+                        <option value="">-- Select a Course --</option>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}" {% if trainee.assigned_course and trainee.assigned_course.id == course.id %}selected{% endif %}>{{ course.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'trainees' %}" class="btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas {% if trainee.id %}fa-save{% else %}fa-user-plus{% endif %}"></i> 
+                        {% if trainee.id %}Update{% else %}Add{% endif %} Trainee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Any additional JavaScript for this page -->
+{% endblock %}

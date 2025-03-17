@@ -1,0 +1,35 @@
+.header-container {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.add-btn {
+    background-color: #27ae60;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #2ecc71;
+}
+
+.edit-btn {
+    background-color: #3498db;
+}
+
+.edit-btn:hover {
+    background-color: #2980b9;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.trainee-image {
+    object-fit: cover;
+    border-radius: 4px;
+}
+
