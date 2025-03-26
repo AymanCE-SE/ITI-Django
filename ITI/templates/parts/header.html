@@ -15,10 +15,10 @@
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'courses' in request.path %}active{% endif %}" href="{% url 'course' %}">Courses</a>
+                        <a class="nav-link {% if 'courses' in request.path %}active{% endif %}" href="{% url 'course-list' %}">Courses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'trainees' in request.path %}active{% endif %}" href="{% url 'trainees' %}">trainees</a>
+                        <a class="nav-link {% if 'trainees' in request.path %}active{% endif %}" href="{% url 'trainee-list' %}">trainees</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="">Contact</a>

@@ -1,67 +1,71 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from .models import *
-
-def getallcourse(request):
-    courses = Course.objects.all() 
-    return render(request, 'course.html', context={'courses': courses}) 
-
-def add_course(request):
-    if request.method == "POST":
-        course_name = request.POST.get("course_name", "").strip()
-        course_description = request.POST.get("course_description", "").strip()
-        duration = request.POST.get("course_duration", 0)
-        status = request.POST.get("status", False)
-
-        if course_name: 
-            Course.objects.create(
-                name=course_name,
-                description=course_description,
-                course_duration=int(duration),
-            )
-            return redirect("course")  
-
-    return render(request, "courseform.html")  
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Course
-
-def update_course(request, course_id):
-    
-    course = get_object_or_404(Course, id=course_id)
-    
-    if request.method == "POST":
-        course.name = request.POST.get("course_name", "").strip()
-        course.description = request.POST.get("course_description", "").strip()
-        course.course_duration = int(request.POST.get("course_duration", 0))
-        course.status = request.POST.get("status", False)
-        course.save()
-        return redirect("course")
-
-    return render(request, "courseform.html", {"course": course})  
-
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
+from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.contrib import messages
 from .models import Course
 from .forms import CourseForm
-from .forms import CourseForm
+from .serializers import CourseSerializer
+from rest_framework import viewsets
 
-def delete_course(request, course_id):
-    course = Course.objects.get(id=course_id)
-    course.delete()
-    return redirect("course")
+class CourseAddView(View):
+    template_name = 'forms/courseform.html'
+    form_class = CourseForm
 
-def createCourse(request):
-    form = CourseForm()
-    if request.method == "POST":
-        form = CourseForm(request.POST)
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
         if form.is_valid():
-            course = Course(
-                name=form.cleaned_data['courseName'].strip(),
-                description=form.cleaned_data['courseDescription'].strip(),
-                course_duration=form.cleaned_data['courseDuration'],
-                active=form.cleaned_data['active'],
-            )
-            course.save()
-            return redirect("course")
-    return render(request, "forms/courseform.html", {"form": form})
+            form.save()
+            messages.success(request, 'Course added successfully!')
+
+            return redirect("course-list")
+        return render(request, self.template_name, {'form': form})
+
+class CourseUpdateView(View):
+    template_name = 'forms/courseform.html'
+    form_class = CourseForm
+
+    def get(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+        form = self.form_class(instance=course)
+        return render(request, self.template_name, {'form': form, 'course': course})
+
+    def post(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+        form = self.form_class(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Course updated successfully!')
+
+            return redirect("course-list")
+        return render(request, self.template_name, {'form': form, 'course': course})
+
+class CourseListView(ListView):
+    model = Course
+    template_name = 'course.html'
+    context_object_name = 'courses'
+
+class CourseDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        course = get_object_or_404(Course, pk=kwargs['pk'])
+        course.delete()
+        messages.success(request, 'Course deleted successfully!')
+        return redirect('course-list')
+        
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'courseDetail.html'
+    context_object_name = 'course'
+
+
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer

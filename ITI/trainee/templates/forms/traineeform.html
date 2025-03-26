@@ -1,26 +1,49 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 
-{% block title %}{% if trainee.id %}Edit{% else %}Add New{% endif %} Trainee | ITI Egypt{% endblock %}
+{% block title %}
+    {% if trainee %}Edit{% else %}Add{% endif %} Trainee | ITI Egypt
+{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="{% static 'css/traineeform.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link rel="stylesheet" href="{% static 'css/traineeform.css' %}" />
 {% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <header class="d-flex justify-content-between align-items-center mb-4">
         <h1>Trainee Management</h1>
-        <a href="{% url 'trainees' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Trainees
-        </a>
+        <div class="btn-group">
+            <a href="{% url 'trainee-list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Trainees
+            </a>
+        </div>
     </header>
-    
-    {{form}}
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<!-- Any additional JavaScript for this page --> 
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="card-title mb-0">{% if trainee %}Edit{% else %}Add New{% endif %} Trainee (Model Form)</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if trainee.image %}
+                <p>Current Image: <img src="{{ trainee.image.url }}" alt="Trainee Image" width="50"></p>
+                <input type="hidden" name="existing_image" value="{{ trainee.image.url }}">
+                {% endif %}
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'trainee-list' %}" class="btn btn-danger">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas {% if trainee.id %}fa-save{% else %}fa-user-plus{% endif %}"></i> 
+                        {% if trainee.id %}Update{% else %}Add{% endif %} Trainee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

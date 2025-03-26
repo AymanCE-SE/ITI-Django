@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from course.models import Course
+from django.templatetags.static import static
 
 # Create your models here
 class Trainee(models.Model):
@@ -14,8 +16,36 @@ class Trainee(models.Model):
             message='Phone number must be entered in the format: "01XXXXXXXXX". Up to 11 digits allowed.'
         )
     ])
-    assigned_course = models.ForeignKey('course.Course', on_delete=models.SET_NULL, null=True, to_field='id')
-    image = models.ImageField(upload_to='images/%y/%m/%d', blank=True)
+    assigned_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='trainees')
+    image = models.ImageField(upload_to='trainees/', null=True, blank=True)
+    
+    @classmethod
+    def getTraineeById(cls,id):
+        return cls.objects.get(id=id)
+    
+    @classmethod
+    def updateTrainee(cls, id, first_name, last_name, email, age, phone, assigned_course_id, image):
+        trainee = cls.getTraineeById(id)
+        trainee.first_name = first_name
+        trainee.last_name = last_name
+        trainee.email = email
+        trainee.age = age
+        trainee.phone = phone
+        trainee.assigned_course_id = assigned_course_id
+        trainee.image = image
+        trainee.save()
+        return trainee
+    
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return static('images/Default.png')
+        
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
     class Meta:
         db_table = "trainees"

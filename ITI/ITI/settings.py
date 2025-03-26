@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'trainee.apps.TraineeConfig',
     'course.apps.CourseConfig',
+    'django_cleanup.apps.CleanupConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

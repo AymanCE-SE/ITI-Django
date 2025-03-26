@@ -1,17 +1,13 @@
 from django import forms
 from .models import Course
 
-class CourseForm(forms.Form):
-    courseName = forms.CharField(max_length=100, required=True , label="Course Name" , widget=forms.TextInput(attrs={'placeholder': 'Course Name'}))
-    courseDescription = forms.CharField(max_length=1000, required=True , label="Course Description" , widget=forms.Textarea(attrs={'placeholder': 'Course Description'}))
-    courseDuration = forms.IntegerField(required=True , label="Course Duration" , widget=forms.NumberInput(attrs={'placeholder': 'Course Duration'}))
-    active = forms.BooleanField(required=False , label="Active" , widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
-    
-    
-    def clean_name(self):
-        courseName= self.cleaned_data['courseName']
-        #check if exists before 
-        name_found = Course.objects.filter(name=courseName).exists()
-        if name_found:
-            raise forms.ValidationError("Course Name already exists")
-        return courseName
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['name', 'description', 'course_duration', 'status']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Course Name'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Course Description'}),
+            'course_duration': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Duration in weeks'}),
+            'status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }

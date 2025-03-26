@@ -4,21 +4,30 @@ from .models import Trainee
 from course.models import Course
 
 class TraineeForm(forms.ModelForm):
+    assigned_course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        empty_label="Select a Course",
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        to_field_name='id',
+        label="Course"
+    )
+
     class Meta:
         model = Trainee
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'email', 'age', 'assigned_course', 'image']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
-            'age': forms.NumberInput(attrs={'placeholder': 'Age'}),
-            'course': forms.Select(attrs={'placeholder': 'Course'}),
-            'track': forms.Select(attrs={'placeholder': 'Track'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Age'}),
             'status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'assigned_course': forms.Select(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'})
         }
-        
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        #check if exists before 
-        name_found = Trainee.objects.filter(name=name).exists()
-        if name_found:
-            raise forms.ValidationError("Trainee Name already exists")
-        return name
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if self.instance.pk is None: 
+            if Trainee.objects.filter(email=email).exists():
+                raise ValidationError("Email already exists")
+        return email

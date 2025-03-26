@@ -39,8 +39,9 @@
 .trainee-image:active {
     transform: scale(4);
     cursor: pointer;
-    z-index: 100;
+    z-index: 1000;
     position: relative;
+    overflow: auto;
 }
 
 .table-responsive {
