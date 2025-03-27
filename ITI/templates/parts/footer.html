@@ -1,42 +1,48 @@
+<!-- @format -->
+
 <!-- footer.html -->
 <footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5>Information Technology Institute</h5>
+        <p>
+          Empowering Egypt's youth with cutting-edge IT skills since 1993. Join
+          our community of tech innovators and shape the digital future.
+        </p>
+      </div>
+      <div class="col-md-2 mb-4 mb-md-0">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="">Home</a></li>
+          <li><a href="{% url 'course_list' %}">Courses</a></li>
+          <li><a href="{% url 'trainee_list' %}">trainees</a></li>
+          <li><a href="">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-4 mb-md-0">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="#">9-Month Diploma</a></li>
+          <li><a href="#">Professional Training</a></li>
+          <li><a href="#">Summer Training</a></li>
+          <li><a href="#">Online Courses</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5>Contact Us</h5>
+        <ul>
+          <li>Smart Village, Cairo-Alex Desert Road</li>
+          <li>16302</li>
+          <li>info@iti.gov.eg</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="copyright mt-4">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5>Information Technology Institute</h5>
-                <p>Empowering Egypt's youth with cutting-edge IT skills since 1993. Join our community of tech innovators and shape the digital future.</p>
-            </div>
-            <div class="col-md-2 mb-4 mb-md-0">
-                <h5>Quick Links</h5>
-                <ul>
-                    <li><a href="">Home</a></li>
-                    <li><a href="{% url 'course-list' %}">Courses</a></li>
-                    <li><a href="{% url 'trainee-list' %}">trainees</a></li>
-                    <li><a href="">Contact</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5>Programs</h5>
-                <ul>
-                    <li><a href="#">9-Month Diploma</a></li>
-                    <li><a href="#">Professional Training</a></li>
-                    <li><a href="#">Summer Training</a></li>
-                    <li><a href="#">Online Courses</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <h5>Contact Us</h5>
-                <ul>
-                    <li>Smart Village, Cairo-Alex Desert Road</li>
-                    <li>16302</li>
-                    <li>info@iti.gov.eg</li>
-                </ul>
-            </div>
-        </div>
+      &copy; {% now "Y" %} Information Technology Institute (ITI). All Rights
+      Reserved.
     </div>
-    <div class="copyright mt-4">
-        <div class="container">
-            &copy; {% now "Y" %} Information Technology Institute (ITI). All Rights Reserved.
-        </div>
-    </div>
+  </div>
 </footer>

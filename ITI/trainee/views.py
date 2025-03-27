@@ -39,7 +39,7 @@ class TraineeAddView(View):
         messages.success(request, 'trainee added successfully!')
 
 
-        return redirect('trainee-list')
+        return redirect('trainee_list')
     
 #CBVs For Form View
 class TraineeAddFormView(View):
@@ -56,7 +56,7 @@ class TraineeAddFormView(View):
             form.save()
             messages.success(request, 'trainee added successfully!')
 
-            return redirect('trainee-list')
+            return redirect('trainee_list')
         return render(request, self.template_name, {'form': form})
 
 class TraineeUpdateView(View):
@@ -74,14 +74,14 @@ class TraineeUpdateView(View):
         if form.is_valid():
             form.save()
             messages.success(request, 'trainee updated successfully!')
-            return redirect("trainee-list")
+            return redirect("trainee_list")
         return render(request, self.template_name, {'form': form, 'trainee': trainee})
 
 
 #delete in generic
 class TraineeDeleteView(DeleteView):
     model = Trainee
-    success_url = reverse_lazy('trainee-list')
+    success_url = reverse_lazy('trainee_list')
     
     def form_valid(self, form):
         self.object.delete()
@@ -134,7 +134,7 @@ class TraineeViewSet(viewsets.ModelViewSet):
 #             assigned_course_id=course_id,
 #             image=image,
 #         )
-#         return redirect('trainee-list')
+#         return redirect('trainee_list')
 #     courses = Course.objects.all()
 #     return render(request, 'traineeform.html', {'courses': courses})
 

@@ -22,7 +22,7 @@ class CourseAddView(View):
             form.save()
             messages.success(request, 'Course added successfully!')
 
-            return redirect("course-list")
+            return redirect("course_list")
         return render(request, self.template_name, {'form': form})
 
 class CourseUpdateView(View):
@@ -41,7 +41,7 @@ class CourseUpdateView(View):
             form.save()
             messages.success(request, 'Course updated successfully!')
 
-            return redirect("course-list")
+            return redirect("course_list")
         return render(request, self.template_name, {'form': form, 'course': course})
 
 class CourseListView(ListView):
@@ -54,7 +54,7 @@ class CourseDeleteView(View):
         course = get_object_or_404(Course, pk=kwargs['pk'])
         course.delete()
         messages.success(request, 'Course deleted successfully!')
-        return redirect('course-list')
+        return redirect('course_list')
         
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

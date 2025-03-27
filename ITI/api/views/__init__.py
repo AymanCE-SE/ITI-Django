@@ -1,2 +1,2 @@
-from .trainee_views import TraineeViewSet
-from .course_views import CourseViewSet
+# from .trainee_views import TraineeViewSet
+# from .course_views import CourseViewSet

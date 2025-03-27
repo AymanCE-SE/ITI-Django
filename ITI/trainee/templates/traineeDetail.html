@@ -1,14 +1,11 @@
 <!-- @format -->
 
-{% extends 'layout/base.html' %}
-{% load static %}
-{% block title %}Trainee Details | ITI Egypt{% endblock %}
-
-{% block content %}
+{% extends 'layout/base.html' %} {% load static %} {% block title %}Trainee
+Details | ITI Egypt{% endblock %} {% block content %}
 <div class="container mt-4">
   <header class="d-flex justify-content-between align-items-center mb-4">
     <h1>Trainee Details</h1>
-    <a href="{% url 'trainee-list' %}" class="btn btn-outline-secondary">
+    <a href="{% url 'trainee_list' %}" class="btn btn-outline-secondary">
       <i class="fas fa-arrow-left"></i> Back to Trainees
     </a>
   </header>
@@ -16,8 +13,8 @@
   <div class="card shadow">
     <div class="card-body">
       <img
-      src="{{ trainee.image_url }}"
-      alt="{{ trainee.first_name }}"
+        src="{{ trainee.image_url }}"
+        alt="{{ trainee.first_name }}"
         class="mb-3 rounded"
         style="max-width: 200px" />
 
